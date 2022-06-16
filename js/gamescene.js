@@ -98,8 +98,11 @@ var GameScene = new Phaser.Class({
 			userSelectText.setText('your select: ' + userWeapon);
 			opponetSelectText.setText('opponent select: ' + opponentWeapon);
 
-			var left_hand = this.add.sprite(0, 325, 'sprites', `hand_${userWeapon}`).setOrigin(0.5).setScale(1.25);
-			var right_hand = this.add.sprite(config.width, 325, 'sprites', `hand_${opponentWeapon}`).setOrigin(0.5).setScale(1.25);
+			let hands_scale = 1.55;
+			let hands_y = 320;
+
+			var left_hand = this.add.sprite(0, hands_y, 'sprites', `hand_${userWeapon}`).setOrigin(1, 0.5).setScale(hands_scale);
+			var right_hand = this.add.sprite(config.width, hands_y, 'sprites', `hand_${opponentWeapon}`).setOrigin(0, 0.5).setScale(hands_scale);
 			right_hand.flipX=true;
 
 			let anim_step = 8.5;
@@ -107,7 +110,7 @@ var GameScene = new Phaser.Class({
 			var anim = setInterval(()=>{
 				left_hand.setPosition(left_hand.x += anim_step, left_hand.y);
 				right_hand.setPosition(right_hand.x -= anim_step, right_hand.y);
-				if (left_hand.x >= config.width/4.5 || right_hand.x <= config.width - config.width/4.5) {
+				if (left_hand.x >= left_hand.width * 1.15 || right_hand.x <= right_hand.width / 1.15) {
 					clearTimeout(anim);
 				}
 			},1000/60);
