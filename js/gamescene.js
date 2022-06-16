@@ -118,7 +118,7 @@ var GameScene = new Phaser.Class({
 					this.sfx_lose.play();
 				}
 				else if (player_result_code === 0) {
-					text_result = "It's draw";
+					text_result = "It's a draw";
 					this.sfx_draw.play();
 				}
 				var gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
