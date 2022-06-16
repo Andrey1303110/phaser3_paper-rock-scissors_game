@@ -98,7 +98,7 @@ var GameScene = new Phaser.Class({
 			userSelectText.setText('your select: ' + userWeapon);
 			opponetSelectText.setText('opponent select: ' + opponentWeapon);
 
-			let hands_scale = 1.55;
+			let hands_scale = 1.85;
 			let hands_y = 320;
 
 			var left_hand = this.add.sprite(0, hands_y, 'sprites', `hand_${userWeapon}`).setOrigin(1, 0.5).setScale(hands_scale);
