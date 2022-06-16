@@ -1,0 +1,20 @@
+{
+    "frames":[
+        {"filename":"hand_rock","frame":{"x":548,"y":527,"w":547,"h":170},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":547,"h":170},"sourceSize":{"w":547,"h":170}},
+        {"filename":"hand_scissors","frame":{"x":0,"y":0,"w":547,"h":170},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":547,"h":170},"sourceSize":{"w":547,"h":170}},
+        {"filename":"hand_paper","frame":{"x":0,"y":583,"w":547,"h":170},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":547,"h":170},"sourceSize":{"w":547,"h":170}},
+        {"filename":"logo","frame":{"x":0,"y":754,"w":500,"h":317},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":500,"h":317},"sourceSize":{"w":500,"h":317}},
+        {"filename":"btn_return","frame":{"x":0,"y":171,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"btn_return_act","frame":{"x":311,"y":373,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"bg","frame":{"x":548,"y":0,"w":608,"h":526},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":608,"h":526},"sourceSize":{"w":608,"h":526}},
+        {"filename":"btn_faq_act","frame":{"x":311,"y":272,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"btn_faq","frame":{"x":412,"y":474,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"btn_play_act","frame":{"x":311,"y":474,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"btn_play","frame":{"x":412,"y":373,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"btn_close_act","frame":{"x":412,"y":272,"w":100,"h":100},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":100,"h":100},"sourceSize":{"w":100,"h":100}},
+        {"filename":"paper","frame":{"x":0,"y":272,"w":310,"h":310},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":310,"h":310},"sourceSize":{"w":310,"h":310}},
+        {"filename":"scissors","frame":{"x":812,"y":754,"w":310,"h":310},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":310,"h":310},"sourceSize":{"w":310,"h":310}},
+        {"filename":"rock","frame":{"x":501,"y":754,"w":310,"h":310},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":310,"h":310},"sourceSize":{"w":310,"h":310}}],
+    "meta":
+        {"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"spritearray.png","size":{"w":1156,"h":1071},"scale":1}
+}
