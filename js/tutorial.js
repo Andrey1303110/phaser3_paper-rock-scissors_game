@@ -1,11 +1,11 @@
-var TutorScene = new Phaser.Class({
+var FaqScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
     initialize:
 
-        function TutorScene() {
-            Phaser.Scene.call(this, { key: 'tutorscene' });
+        function FaqScene() {
+            Phaser.Scene.call(this, { key: 'FaqScene' });
         },
 
     create: function () {

@@ -18,7 +18,7 @@ var MainMenu = new Phaser.Class({
     },
 
     doTutor: function () {
-        this.scene.start('tutorscene');
+        this.scene.start('FaqScene');
     },
 
     doStart: function () {
