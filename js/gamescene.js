@@ -16,7 +16,6 @@ var GameScene = new Phaser.Class({
 
 	create: function () {
 		var opponetSelectText, weaponText, gameScore;
-		var gameResult = null;
 		var userWeapon = '';
 		var player_result_code = '';
 
@@ -35,6 +34,26 @@ var GameScene = new Phaser.Class({
 		let scale = Math.max(scaleX, scaleY);
 		image.setScale(scale).setScrollFactor(0);
 		image.alpha = .65;
+
+		var gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', '');
+		gameScore = this.add.bitmapText(config.width / 2, 125, 'fontwhite', '');
+		gameScore.setOrigin(0.5).setCenterAlign();
+
+		let hands_scale = 1.8;
+		let hands_y = 285;
+
+		left_hand = this.add.sprite(0, hands_y, 'sprites', 'hand_rock');
+		left_hand.x = -left_hand.width;
+		left_hand.setOrigin(0.5);
+		left_hand.setScale(hands_scale);
+		left_hand.setAngle(0);
+
+		right_hand = this.add.sprite(config.width, hands_y, 'sprites', 'hand_rock');
+		right_hand.x = config.width + right_hand.width;
+		right_hand.setOrigin(0.5);
+		right_hand.setScale(hands_scale);
+		right_hand.setAngle(0);
+		right_hand.flipX=true;
 
 		this.up_text = this.add.bitmapText(config.width / 2, 125, 'fontwhite', "Select your weapon");
 		this.up_text.setFontSize(55).setOrigin(0.5).setCenterAlign();
@@ -56,14 +75,9 @@ var GameScene = new Phaser.Class({
 			weapon.alpha = .75;
 
 			weapon.on('pointerdown', function () {
-				if (!player_result_code) {
-					if (gameResult) {
-						gameResult.destroy();
-						left_hand.destroy();
-						right_hand.destroy();
-						opponetSelectText.setText('');
-						gameScore.setText('');
-					}
+				if (player_result_code === '') {
+					opponetSelectText.setText('');
+					gameScore.setText('');
 					userWeapon = weapon.frame.name;
 					weapon.alpha = 1;
 				}
@@ -90,6 +104,8 @@ var GameScene = new Phaser.Class({
 
 		function doWinner() {
 			if (player_result_code === '') {
+				gameResult.setText('');
+				gameScore.setText('');
 				this.sfx_win.stop();
 				this.sfx_lose.stop();
 				this.sfx_draw.stop();
@@ -126,56 +142,61 @@ var GameScene = new Phaser.Class({
 					}
 				}
 
-				let hands_scale = 1.8;
-				let hands_y = 285;
-				let frames = 5;
+				let frames = 6;
 				let frame_duration = 260;
 
 				var timeline_left = this.tweens.createTimeline();
 				var timeline_right = this.tweens.createTimeline();
 
-				left_hand = this.add.sprite(-250, hands_y, 'sprites', `hand_rock`);
-				left_hand.setOrigin(.5);
-				left_hand.setScale(hands_scale);
-				left_hand.setAngle(25);
-
-				right_hand = this.add.sprite(config.width + 250, hands_y, 'sprites', `hand_rock`);
-				right_hand.setScale(hands_scale);
-				right_hand.flipX=true;
-				left_hand.setOrigin(.5);
-				left_hand.setAngle(25);
-
 				for (let i = 0; i <= frames; i++) {
-					(i % 2 === 0) ? cof = -1 : cof = 1;
-					if (i < frames) {
+					(i % 2 === 1) ? cof = -1 : cof = 1;
+					if (i === 0) {
+						left_hand.setTexture('sprites', 'hand_rock');
+						right_hand.setTexture('sprites', 'hand_rock');
 						timeline_left.add({
 							targets: left_hand,
-							angle: 25 * cof,
-							ease: 'Power2',
+							x: -225,
+							ease: 'Linear',
 							duration: frame_duration,
 						});
 						timeline_right.add({
 							targets: right_hand,
-							angle: -25 * cof,
-							ease: 'Power2',
+							x: config.width + 225,
+							ease: 'Linear',
 							duration: frame_duration,
 						});
 					}
 					else {
-						timeline_left.add({
-							targets: left_hand,
-							angle: 0,
-							x: 110,
-							ease: 'Linear',
-							duration: frame_duration,
-						});
-						timeline_right.add({
-							targets: right_hand,
-							angle: 0,
-							x: config.width - 110,
-							ease: 'Linear',
-							duration: frame_duration,
-						});
+						if (i < frames) {
+							timeline_left.add({
+								targets: left_hand,
+								angle: 25 * cof,
+								ease: 'Power2',
+								duration: frame_duration,
+							});
+							timeline_right.add({
+								targets: right_hand,
+								angle: -25 * cof,
+								ease: 'Power2',
+								duration: frame_duration,
+							});
+						}
+						else {
+							timeline_left.add({
+								targets: left_hand,
+								angle: 0,
+								x: 110,
+								ease: 'Linear',
+								duration: frame_duration,
+							});
+							timeline_right.add({
+								targets: right_hand,
+								angle: 0,
+								x: config.width - 110,
+								ease: 'Linear',
+								duration: frame_duration,
+							});
+						}
 					}
 				}
 				timeline_left.play();
@@ -202,14 +223,14 @@ var GameScene = new Phaser.Class({
 						this.sfx_draw.play();
 					}
 
-					gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
+					gameResult.setText(text_result);
 					gameResult.setOrigin(0.5).setCenterAlign();
 					gameResult.setAlpha(0.0);
 					gameResult.setAngle(540);
 					gameResult.setScale(.1, .1);
 					gameResult.setFontSize(60);
-					gameScore = this.add.bitmapText(config.width / 2, 125, 'fontwhite', this.userScore + ' : ' + this.opponentScore);
-					gameScore.setOrigin(0.5).setCenterAlign();
+
+					gameScore.setText(this.userScore + ' : ' + this.opponentScore);
 
 					this.tweens.add(
 						{
@@ -224,7 +245,7 @@ var GameScene = new Phaser.Class({
 					);
 
 					opponetSelectText.setText('opponent select: ' + opponentWeapon);
-					setTimeout(()=>{player_result_code = ''}, 500);
+					setTimeout(()=>{player_result_code = ''}, 1000);
 
 				}, frames * frame_duration);
 			}
