@@ -1,5 +1,4 @@
 var weapons = ['paper', 'rock', 'scissors'];
-var left_hand, right_hand;
 
 var GameScene = new Phaser.Class({
 
@@ -15,7 +14,7 @@ var GameScene = new Phaser.Class({
 	},
 
 	create: function () {
-		var opponetSelectText, weaponText, gameScore;
+		var opponetSelectText, weaponText, gameScore, left_hand, right_hand;
 		var userWeapon = '';
 		var player_result_code = '';
 
