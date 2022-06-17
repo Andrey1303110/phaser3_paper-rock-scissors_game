@@ -15,7 +15,8 @@ var GameScene = new Phaser.Class({
 	},
 
 	create: function () {
-		var opponetSelectText, userSelectText, weaponText;
+		var opponetSelectText, weaponText, gameScore;
+		var gameResult = null;
 		var userWeapon = '';
 		var player_result_code = '';
 
@@ -23,7 +24,10 @@ var GameScene = new Phaser.Class({
 		this.sfx_lose = this.sound.add('lose');
 		this.sfx_win = this.sound.add('win');
 		this.sfx_drums = this.sound.add('drums');
-		var sfx_choice = this.sound.add('choice');
+		let sfx_choice = this.sound.add('choice');
+
+		this.userScore = 0;
+		this.opponentScore = 0;
 
 		let image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg');
 		let scaleX = this.cameras.main.width / image.width;
@@ -32,7 +36,7 @@ var GameScene = new Phaser.Class({
 		image.setScale(scale).setScrollFactor(0);
 		image.alpha = .65;
 
-		this.up_text = this.add.bitmapText(config.width / 2, 165, 'fontwhite', "Select your weapon");
+		this.up_text = this.add.bitmapText(config.width / 2, 125, 'fontwhite', "Select your weapon");
 		this.up_text.setFontSize(55).setOrigin(0.5).setCenterAlign();
 
 		weaponText = this.add.bitmapText(0, 540, 'fontwhite', '').setOrigin(0.5).setCenterAlign();
@@ -48,20 +52,29 @@ var GameScene = new Phaser.Class({
 
 			let position = config.width / 2 + (360 * pos_cof);
 
-			let weapon = this.addButton((position), 400, 'sprites', doWinner, this, weapons[i], weapons[i]).setDisplaySize(135, 135);
+			let weapon = this.addButton((position), 490, 'sprites', doWinner, this, weapons[i], weapons[i]).setDisplaySize(135, 135);
 			weapon.alpha = .75;
 
 			weapon.on('pointerdown', function () {
-				userWeapon = weapon.frame.name;
+				if (!player_result_code) {
+					if (gameResult) {
+						gameResult.destroy();
+						left_hand.destroy();
+						right_hand.destroy();
+						opponetSelectText.setText('');
+						gameScore.setText('');
+					}
+					userWeapon = weapon.frame.name;
+					weapon.alpha = 1;
+				}
 			});
 
 			weapon.on('pointerover', function () {
-				if (player_result_code === '') {
+				if (!player_result_code) {
 					weapon.alpha = 1;
-					weaponText.setPosition(this.x, 540);
+					weaponText.setPosition(this.x, 585);
 					weaponText.setText(weapon.frame.name);
 					sfx_choice.play();
-					console.log(sfx_choice);
 				}
 			});
 			weapon.on('pointerout', function () {
@@ -70,9 +83,9 @@ var GameScene = new Phaser.Class({
 			});
 		}
 
-		this.btn_quit = this.addButton(config.width - 35, 35, 'sprites', this.doBack, this, 'btn_close_act', 'btn_close_act').setDisplaySize(25, 25);
+		this.btn_quit = this.addButton(config.width - 35, 35, 'sprites', this.doBack, this, 'btn_close_act', 'btn_close_act').setDisplaySize(45, 45);
 
-		userSelectText = this.add.bitmapText(config.width / 2, 610, 'fontwhite', '').setOrigin(0.5).setCenterAlign();
+		userSelectText = this.add.bitmapText(config.width / 2, 625, 'fontwhite', '').setOrigin(0.5).setCenterAlign();
 		opponetSelectText = this.add.bitmapText(config.width / 2, 680, 'fontwhite', '').setOrigin(0.5).setCenterAlign();
 
 		function doWinner() {
@@ -110,10 +123,10 @@ var GameScene = new Phaser.Class({
 					}
 				}
 
-				let hands_scale = 1.85;
-				let hands_y = 320;
+				let hands_scale = 1.8;
+				let hands_y = 285;
 				let frames = 5;
-				let frame_duration = 250;
+				let frame_duration = 260;
 
 				var timeline_left = this.tweens.createTimeline();
 				var timeline_right = this.tweens.createTimeline();
@@ -149,15 +162,15 @@ var GameScene = new Phaser.Class({
 						timeline_left.add({
 							targets: left_hand,
 							angle: 0,
-							x: 75,
-							ease: 'Sinusoidal',
+							x: 110,
+							ease: 'Linear',
 							duration: frame_duration,
 						});
 						timeline_right.add({
 							targets: right_hand,
 							angle: 0,
-							x: config.width - 75,
-							ease: 'Sinusoidal',
+							x: config.width - 110,
+							ease: 'Linear',
 							duration: frame_duration,
 						});
 					}
@@ -174,36 +187,41 @@ var GameScene = new Phaser.Class({
 					if (player_result_code === 1) {
 						text_result = "You win!";
 						this.sfx_win.play();
+						this.userScore++;
 					}
 					else if (player_result_code === -1) {
 						text_result = "You lose!";
 						this.sfx_lose.play();
+						this.opponentScore++;
 					}
 					else if (player_result_code === 0) {
 						text_result = "It's a draw";
 						this.sfx_draw.play();
 					}
-					var gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
+
+					gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
 					gameResult.setOrigin(0.5).setCenterAlign();
 					gameResult.setAlpha(0.0);
 					gameResult.setAngle(540);
-					gameResult.setScale(6, 6);
+					gameResult.setScale(.1, .1);
+					gameResult.setFontSize(60);
+					gameScore = this.add.bitmapText(config.width / 2, 125, 'fontwhite', this.userScore + ' : ' + this.opponentScore);
+					gameScore.setOrigin(0.5).setCenterAlign();
 
 					this.tweens.add(
 						{
 							targets: gameResult,
-							scaleX: 2,
-							scaleY: 2,
+							scaleX: 1,
+							scaleY: 1,
 							alpha: 1.0,
 							angle: 0,
 							ease: 'Power3',
-							duration: 1250,
-							delay: 250
+							duration: 1000
 						}
 					);
 
-					userSelectText.setText('your select: ' + userWeapon);
 					opponetSelectText.setText('opponent select: ' + opponentWeapon);
+					setTimeout(()=>{player_result_code = ''}, 500);
 
 				}, frames * frame_duration);
 			}
