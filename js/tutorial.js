@@ -9,7 +9,7 @@ var FaqScene = new Phaser.Class({
         },
 
     create: function () {
-        var logo = this.add.sprite(config.width / 2, 100, 'sprites', 'logo');
+        var logo = this.add.sprite(config.width / 2, 125, 'sprites', 'logo');
 
         var main_text = this.add.bitmapText(config.width / 2, 375, 'fontwhite', "The winner is determined by the following rules:\n\nPaper beats rock (paper wraps rock)\nRock beats scissors (rock breaks scissors)\nScissors beats paper (scissors cut paper)");
         main_text.setOrigin(0.5).setLeftAlign();
