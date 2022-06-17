@@ -52,6 +52,7 @@ var Preloader = new Phaser.Class({
 		this.load.audio('lose', ['snd/uh-oh.mp3', 'snd/uh-oh.ogg']);
 		this.load.audio('draw', ['snd/what.mp3', 'snd/what.ogg']);
 		this.load.audio('choice', ['snd/choice.mp3', 'snd/choice.ogg']);
+		this.load.audio('drums', ['snd/drums.mp3', 'snd/drums.ogg']);
 	},
 
 	create: function ()
