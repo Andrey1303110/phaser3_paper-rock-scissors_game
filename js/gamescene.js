@@ -1,4 +1,5 @@
 var weapons = ['paper', 'rock', 'scissors'];
+var left_hand, right_hand;
 
 var GameScene = new Phaser.Class({
 
@@ -21,6 +22,7 @@ var GameScene = new Phaser.Class({
 		this.sfx_draw = this.sound.add('draw');
 		this.sfx_lose = this.sound.add('lose');
 		this.sfx_win = this.sound.add('win');
+		this.sfx_drums = this.sound.add('drums');
 		var sfx_choice = this.sound.add('choice');
 
 		let image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg');
@@ -108,58 +110,102 @@ var GameScene = new Phaser.Class({
 					}
 				}
 
-				let text_result = '';
-				if (player_result_code === 1) {
-					text_result = "You win!";
-					this.sfx_win.play();
-				}
-				else if (player_result_code === -1) {
-					text_result = "You lose!";
-					this.sfx_lose.play();
-				}
-				else if (player_result_code === 0) {
-					text_result = "It's a draw";
-					this.sfx_draw.play();
-				}
-				var gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
-				gameResult.setOrigin(0.5).setCenterAlign();
-				gameResult.setAlpha(0.0);
-				gameResult.setAngle(540);
-				gameResult.setScale(6, 6);
-				
-				this.tweens.add(
-					{
-						targets: gameResult,
-						scaleX: 2,
-						scaleY: 2,
-						alpha: 1.0,
-						angle: 0,
-						ease: 'Power3',
-						duration: 1250,
-						delay: 250
-					}
-				);
-
-				userSelectText.setText('your select: ' + userWeapon);
-				opponetSelectText.setText('opponent select: ' + opponentWeapon);
-
 				let hands_scale = 1.85;
 				let hands_y = 320;
+				let frames = 5;
+				let frame_duration = 250;
 
-				var left_hand = this.add.sprite(0, hands_y, 'sprites', `hand_${userWeapon}`).setOrigin(1, 0.5).setScale(hands_scale);
-				var right_hand = this.add.sprite(config.width, hands_y, 'sprites', `hand_${opponentWeapon}`).setOrigin(0, 0.5).setScale(hands_scale);
+				var timeline_left = this.tweens.createTimeline();
+				var timeline_right = this.tweens.createTimeline();
+
+				left_hand = this.add.sprite(-250, hands_y, 'sprites', `hand_rock`);
+				left_hand.setOrigin(.5);
+				left_hand.setScale(hands_scale);
+				left_hand.setAngle(25);
+
+				right_hand = this.add.sprite(config.width + 250, hands_y, 'sprites', `hand_rock`);
+				right_hand.setScale(hands_scale);
 				right_hand.flipX=true;
+				left_hand.setOrigin(.5);
+				left_hand.setAngle(25);
 
-				let anim_step = 8.5;
-
-				var anim = setInterval(()=>{
-					left_hand.setPosition(left_hand.x += anim_step, left_hand.y);
-					right_hand.setPosition(right_hand.x -= anim_step, right_hand.y);
-					if (left_hand.x >= left_hand.width * 1.15 || right_hand.x <= right_hand.width / 1.15) {
-						clearTimeout(anim);
-						console.log(this.scene);
+				for (let i = 0; i <= frames; i++) {
+					(i % 2 === 0) ? cof = -1 : cof = 1;
+					if (i < frames) {
+						timeline_left.add({
+							targets: left_hand,
+							angle: 25 * cof,
+							ease: 'Power2',
+							duration: frame_duration,
+						});
+						timeline_right.add({
+							targets: right_hand,
+							angle: -25 * cof,
+							ease: 'Power2',
+							duration: frame_duration,
+						});
 					}
-				},1000/60);
+					else {
+						timeline_left.add({
+							targets: left_hand,
+							angle: 0,
+							x: 75,
+							ease: 'Sinusoidal',
+							duration: frame_duration,
+						});
+						timeline_right.add({
+							targets: right_hand,
+							angle: 0,
+							x: config.width - 75,
+							ease: 'Sinusoidal',
+							duration: frame_duration,
+						});
+					}
+				}
+				timeline_left.play();
+				timeline_right.play();
+				this.sfx_drums.play();
+
+				setTimeout(()=>{
+					left_hand.setTexture('sprites', `hand_${userWeapon}`);
+					right_hand.setTexture('sprites', `hand_${opponentWeapon}`);
+
+					let text_result = '';
+					if (player_result_code === 1) {
+						text_result = "You win!";
+						this.sfx_win.play();
+					}
+					else if (player_result_code === -1) {
+						text_result = "You lose!";
+						this.sfx_lose.play();
+					}
+					else if (player_result_code === 0) {
+						text_result = "It's a draw";
+						this.sfx_draw.play();
+					}
+					var gameResult = this.add.bitmapText(config.width / 2, 50, 'fontwhite', text_result);
+					gameResult.setOrigin(0.5).setCenterAlign();
+					gameResult.setAlpha(0.0);
+					gameResult.setAngle(540);
+					gameResult.setScale(6, 6);
+
+					this.tweens.add(
+						{
+							targets: gameResult,
+							scaleX: 2,
+							scaleY: 2,
+							alpha: 1.0,
+							angle: 0,
+							ease: 'Power3',
+							duration: 1250,
+							delay: 250
+						}
+					);
+
+					userSelectText.setText('your select: ' + userWeapon);
+					opponetSelectText.setText('opponent select: ' + opponentWeapon);
+
+				}, frames * frame_duration);
 			}
 		}
 	},
