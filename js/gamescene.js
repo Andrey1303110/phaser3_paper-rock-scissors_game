@@ -90,6 +90,9 @@ var GameScene = new Phaser.Class({
 
 		function doWinner() {
 			if (player_result_code === '') {
+				this.sfx_win.stop();
+				this.sfx_lose.stop();
+				this.sfx_draw.stop();
 				this.up_text.destroy();
 				let opponentWeapon = weapons[Math.floor(Math.random() * 3)];
 
